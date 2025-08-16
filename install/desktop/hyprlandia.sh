@@ -10,7 +10,7 @@ sudo dnf install -y \
 
 # Install standard packages from Fedora repos
 sudo dnf install -y \
-  polkit-gnome libqalculate waybar mako swaybg \
+  hyprpolkitagent libqalculate waybar mako swaybg \
   xdg-desktop-portal-gtk
 
 # Enable SwayOSD COPR for audio/brightness OSD
