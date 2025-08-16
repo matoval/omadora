@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Get the directory where the main script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
 # Determine source path based on where we're running from
-if [ -d "./config" ]; then
+if [ -d "$SCRIPT_DIR/config" ]; then
   # Running from cloned repository
-  CONFIG_SOURCE="./config"
-  DEFAULT_SOURCE="./default"
+  CONFIG_SOURCE="$SCRIPT_DIR/config"
+  DEFAULT_SOURCE="$SCRIPT_DIR/default"
 else
   # Running from installed location
   CONFIG_SOURCE="~/.local/share/omadora/config"
@@ -61,7 +64,7 @@ if [[ -n "${OMADORA_USER_EMAIL//[[:space:]]/}" ]]; then
 fi
 
 # Set default XCompose that is triggered with CapsLock
-tee ~/.XCompose >/dev/null <<EOF
+cat > ~/.XCompose <<EOF
 include "%H/$DEFAULT_SOURCE/xcompose"
 
 # Identification

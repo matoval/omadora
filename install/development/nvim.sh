@@ -8,9 +8,12 @@ if ! command -v nvim &>/dev/null; then
   # Install LazyVim
   rm -rf ~/.config/nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
+  # Get the directory where the main script is located
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+  
   # Determine source path
-  if [ -d "./config/nvim" ]; then
-    cp -R ./config/nvim/* ~/.config/nvim/
+  if [ -d "$SCRIPT_DIR/config/nvim" ]; then
+    cp -R "$SCRIPT_DIR/config/nvim"/* ~/.config/nvim/
   else
     cp -R ~/.local/share/omadora/config/nvim/* ~/.config/nvim/
   fi
