@@ -60,12 +60,9 @@ if [[ "$(uname -m)" == "x86_64" ]]; then
 fi
 
 # Install development tools (equivalent to Arch's base-devel group)
-if ! dnf group list --installed | grep -q "Development Tools"; then
-  echo "Installing development tools..."
-  sudo dnf groupinstall -y "Development Tools" "Development Libraries"
-else
-  echo "Development tools already installed"
-fi
+echo "Installing development tools..."
+# Use dnf5 compatible @ syntax (works in both dnf4 and dnf5)
+sudo dnf install -y "@Development Tools" "@Development Libraries"
 
 # Install essential build dependencies not covered by groups
 echo "Installing additional build tools..."
