@@ -1,10 +1,16 @@
-# Omarchy
+# Omadora
 
-Turn a fresh Arch installation into a fully-configured, beautiful, and modern web development system based on Hyprland by running a single command. That's the one-line pitch for Omarchy (like it was for Omakub). No need to write bespoke configs for every essential tool just to get started or to be up on all the latest command-line tools. Omarchy is an opinionated take on what Linux can be at its best.
+Turn a fresh Fedora installation into a fully-configured, beautiful, and modern web development system based on Hyprland by running a single command. That's the one-line pitch for Omadora (adapted from Omadora for Fedora). No need to write bespoke configs for every essential tool just to get started or to be up on all the latest command-line tools. Omadora is an opinionated take on what Linux can be at its best.
 
-Read more at [omarchy.org](https://omarchy.org).
+Omadora is a Fedora adaptation of [Basecamp's Omarchy](https://github.com/basecamp/omarchy).
+
+## Installation
+
+```bash
+wget -qO- https://raw.githubusercontent.com/matoval/omadora/master/install.sh | bash
+```
 
 ## License
 
-Omarchy is released under the [MIT License](https://opensource.org/licenses/MIT).
+Omadora is released under the [MIT License](https://opensource.org/licenses/MIT).
 

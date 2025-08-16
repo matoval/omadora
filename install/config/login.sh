@@ -2,30 +2,22 @@
 
 # Hyprland launched via UWSM and login directly as user, rely on disk encryption + hyprlock for security
 if ! command -v uwsm &>/dev/null || ! command -v plymouth &>/dev/null; then
-  sudo pacman -U --noconfirm https://archive.archlinux.org/packages/u/uwsm/uwsm-0.23.0-1-any.pkg.tar.zst
-  yay -S --noconfirm --needed plymouth
+  # Install UWSM from COPR and plymouth from Fedora repos
+  sudo dnf copr enable -y solopasha/hyprland
+  sudo dnf install -y uwsm plymouth plymouth-system-theme
 fi
 
 # ==============================================================================
 # PLYMOUTH SETUP
 # ==============================================================================
 
-if ! grep -Eq '^HOOKS=.*plymouth' /etc/mkinitcpio.conf; then
-  # Backup original mkinitcpio.conf just in case
-  backup_timestamp=$(date +"%Y%m%d%H%M%S")
-  sudo cp /etc/mkinitcpio.conf "/etc/mkinitcpio.conf.bak.${backup_timestamp}"
-
-  # Add plymouth to HOOKS array after 'base udev' or 'base systemd'
-  if grep "^HOOKS=" /etc/mkinitcpio.conf | grep -q "base systemd"; then
-    sudo sed -i '/^HOOKS=/s/base systemd/base systemd plymouth/' /etc/mkinitcpio.conf
-  elif grep "^HOOKS=" /etc/mkinitcpio.conf | grep -q "base udev"; then
-    sudo sed -i '/^HOOKS=/s/base udev/base udev plymouth/' /etc/mkinitcpio.conf
-  else
-    echo "Couldn't add the Plymouth hook"
-  fi
-
-  # Regenerate initramfs
-  sudo mkinitcpio -P
+# Fedora uses dracut instead of mkinitcpio
+if ! sudo dracut --list-modules | grep -q plymouth; then
+  # Enable plymouth module in dracut
+  echo 'add_dracutmodules+=" plymouth "' | sudo tee -a /etc/dracut.conf.d/plymouth.conf
+  
+  # Regenerate initramfs for all kernels
+  sudo dracut --regenerate-all --force
 fi
 
 # Add kernel parameters for Plymouth
@@ -84,12 +76,12 @@ elif [ -d "/etc/cmdline.d" ]; then # UKI
   # Relying on mkinitcpio to assemble a UKI
   # https://wiki.archlinux.org/title/Unified_kernel_image
   if ! grep -q splash /etc/cmdline.d/*.conf; then
-    # Need splash, create the omarchy file
-    echo "splash" | sudo tee -a /etc/cmdline.d/omarchy.conf
+    # Need splash, create the omadora file
+    echo "splash" | sudo tee -a /etc/cmdline.d/omadora.conf
   fi
   if ! grep -q quiet /etc/cmdline.d/*.conf; then
-    # Need quiet, create or append the omarchy file
-    echo "quiet" | sudo tee -a /etc/cmdline.d/omarchy.conf
+    # Need quiet, create or append the omadora file
+    echo "quiet" | sudo tee -a /etc/cmdline.d/omadora.conf
   fi
 elif [ -f "/etc/kernel/cmdline" ]; then # UKI Alternate
   # Alternate UKI kernel cmdline location
@@ -123,9 +115,18 @@ else
   echo ""
 fi
 
-if [ "$(plymouth-set-default-theme)" != "omarchy" ]; then
-  sudo cp -r "$HOME/.local/share/omarchy/default/plymouth" /usr/share/plymouth/themes/omarchy/
-  sudo plymouth-set-default-theme -R omarchy
+if [ "$(plymouth-set-default-theme)" != "omadora" ]; then
+  # Create plymouth theme directory
+  sudo mkdir -p /usr/share/plymouth/themes/omadora/
+  
+  # Check if plymouth theme files exist and copy them
+  if [ -d "$HOME/.local/share/omadora/default/plymouth" ]; then
+    sudo cp -r "$HOME/.local/share/omadora/default/plymouth"/* /usr/share/plymouth/themes/omadora/
+    sudo plymouth-set-default-theme -R omadora
+    echo "✅ Plymouth theme 'omadora' installed"
+  else
+    echo "⚠️  Plymouth theme files not found, using default theme"
+  fi
 fi
 
 # ==============================================================================
@@ -213,11 +214,11 @@ CCODE
   rm /tmp/seamless-login.c
 fi
 
-if [ ! -f /etc/systemd/system/omarchy-seamless-login.service ]; then
-  cat <<EOF | sudo tee /etc/systemd/system/omarchy-seamless-login.service
+if [ ! -f /etc/systemd/system/omadora-seamless-login.service ]; then
+  cat <<EOF | sudo tee /etc/systemd/system/omadora-seamless-login.service
 [Unit]
-Description=Omarchy Seamless Auto-Login
-Documentation=https://github.com/basecamp/omarchy
+Description=Omadora Seamless Auto-Login
+Documentation=https://github.com/matoval/omadora
 Conflicts=getty@tty1.service
 After=systemd-user-sessions.service getty@tty1.service plymouth-quit.service systemd-logind.service
 PartOf=graphical.target
@@ -257,9 +258,9 @@ if ! systemctl is-enabled plymouth-quit-wait.service | grep -q masked; then
   sudo systemctl daemon-reload
 fi
 
-# Enable omarchy-seamless-login.service only if not already enabled
-if ! systemctl is-enabled omarchy-seamless-login.service | grep -q enabled; then
-  sudo systemctl enable omarchy-seamless-login.service
+# Enable omadora-seamless-login.service only if not already enabled
+if ! systemctl is-enabled omadora-seamless-login.service | grep -q enabled; then
+  sudo systemctl enable omadora-seamless-login.service
 fi
 
 # Disable getty@tty1.service only if not already disabled

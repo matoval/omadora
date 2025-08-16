@@ -5,7 +5,7 @@
   "spacing": 0,
   "height": 26,
   "modules-left": [
-    "custom/omarchy",
+    "custom/omadora",
     "hyprland/workspaces"
   ],
   "modules-center": [
@@ -44,16 +44,16 @@
       "5": []
     }
   },
-  "custom/omarchy": {
+  "custom/omadora": {
     "format": "",
-    "on-click": "omarchy-menu",
-    "tooltip-format": "Omarchy Menu\n\nSuper + Alt + Space"
+    "on-click": "omadora-menu",
+    "tooltip-format": "Omadora Menu\n\nSuper + Alt + Space"
   },
   "custom/update": {
     "format": "",
-    "exec": "omarchy-update-available",
-    "on-click": "alacritty --class Omarchy --title Omarchy -e omarchy-update",
-    "tooltip-format": "Omarchy update available",
+    "exec": "omadora-update-available",
+    "on-click": "alacritty --class Omadora --title Omadora -e omadora-update",
+    "tooltip-format": "Omadora update available",
     "interval": 3600
   },
   "cpu": {
@@ -65,7 +65,7 @@
     "format": "{:%A %H:%M}",
     "format-alt": "{:%d %B W%V %Y}",
     "tooltip": false,
-    "on-click-right": "omarchy-cmd-tzupdate"
+    "on-click-right": "omadora-cmd-tzupdate"
   },
   "network": {
     "format-icons": ["󰤯","󰤟","󰤢","󰤥","󰤨"],

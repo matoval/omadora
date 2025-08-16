@@ -1,3 +1,3 @@
 #!/bin/bash
 
-yay -S --noconfirm --needed gum # python-terminaltexteffects
+sudo dnf install -y gum # python-terminaltexteffects

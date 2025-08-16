@@ -83,7 +83,7 @@
       "type": "command",
       "key": "│ ├Ø",
       "keyColor": "blue",
-      "text": "version=$(git -C ~/.local/share/omarchy describe --tags --abbrev=0 2>/dev/null); echo \"Omarchy $version\""
+      "text": "version=$(git -C ~/.local/share/omadora describe --tags --abbrev=0 2>/dev/null); echo \"Omadora $version\""
     },
     {
       "type": "de",

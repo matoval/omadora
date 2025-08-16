@@ -1,26 +1,36 @@
 #!/bin/bash
 
-if ! command -v ufw &>/dev/null; then
-  yay -S --noconfirm --needed ufw ufw-docker
-
-  # Allow nothing in, everything out
-  sudo ufw default deny incoming
-  sudo ufw default allow outgoing
-
-  # Allow ports for LocalSend
-  sudo ufw allow 53317/udp
-  sudo ufw allow 53317/tcp
-
-  # Allow SSH in
-  sudo ufw allow 22/tcp
-
-  # Allow Docker containers to use DNS on host
-  sudo ufw allow in on docker0 to any port 53
-
-  # Turn on the firewall
-  sudo ufw enable
-
-  # Turn on Docker protections
-  sudo ufw-docker install
-  sudo ufw reload
+# Fedora uses firewalld by default - ensure it's running
+if ! systemctl is-active --quiet firewalld; then
+  echo "Starting firewalld..."
+  sudo systemctl enable --now firewalld
 fi
+
+# Configure firewall zones and rules using firewalld
+echo "Configuring firewall rules..."
+
+# Set default zone to public (restrictive by default)
+sudo firewall-cmd --set-default-zone=public
+
+# Allow LocalSend ports
+sudo firewall-cmd --permanent --add-port=53317/tcp
+sudo firewall-cmd --permanent --add-port=53317/udp
+
+# Allow SSH (usually already enabled in public zone)
+sudo firewall-cmd --permanent --add-service=ssh
+
+# Configure Docker integration if Docker is installed
+if command -v docker &>/dev/null; then
+  # Add docker0 interface to trusted zone for container networking
+  sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
+  
+  # Allow DNS for Docker containers
+  sudo firewall-cmd --permanent --zone=trusted --add-service=dns
+fi
+
+# Reload firewall to apply all changes
+sudo firewall-cmd --reload
+
+echo "Firewall configuration completed"
+echo "Active zones:"
+sudo firewall-cmd --get-active-zones

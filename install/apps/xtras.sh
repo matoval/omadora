@@ -1,20 +1,39 @@
 #!/bin/bash
 
-if [ -z "$OMARCHY_BARE" ]; then
-  yay -S --noconfirm --needed \
-    gnome-calculator gnome-keyring signal-desktop \
-    obsidian-bin libreoffice obs-studio kdenlive \
-    xournalpp localsend-bin
+if [ -z "$OMADORA_BARE" ]; then
+  # Install standard packages from Fedora repos
+  sudo dnf install -y \
+    gnome-calculator gnome-keyring \
+    libreoffice obs-studio kdenlive \
+    xournalpp pinta
 
-  # Packages known to be flaky or having key signing issues are run one-by-one
-  for pkg in pinta typora spotify zoom; do
-    yay -S --noconfirm --needed "$pkg" ||
-      echo -e "\e[31mFailed to install $pkg. Continuing without!\e[0m"
-  done
+  # Install GUI applications via Flatpak
+  echo "Installing GUI applications via Flatpak..."
+  flatpak install -y flathub \
+    org.signal.Signal \
+    md.obsidian.Obsidian \
+    org.localsend.localsend_app \
+    com.spotify.Client \
+    us.zoom.Zoom
 
-  yay -S --noconfirm --needed 1password-beta 1password-cli ||
-    echo -e "\e[31mFailed to install 1password. Continuing without!\e[0m"
+  # Install proprietary software automatically
+  
+  # 1Password from official Fedora repository
+  if ! rpm -q 1password &>/dev/null; then
+    echo "Installing 1Password..."
+    sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
+    sudo sh -c 'echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\ngpgkey=https://downloads.1password.com/linux/keys/1password.asc" > /etc/yum.repos.d/1password.repo'
+    sudo dnf install -y 1password 1password-cli || echo "Failed to install 1Password - continuing"
+  fi
+  
+  # Typora from official repository
+  if ! rpm -q typora &>/dev/null; then
+    echo "Installing Typora..."
+    sudo rpm --import https://typora.io/linux/public-key.asc
+    echo -e "[typora]\nname=typora\nbaseurl=https://typora.io/linux/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://typora.io/linux/public-key.asc" | sudo tee /etc/yum.repos.d/typora.repo
+    sudo dnf install -y typora || echo "Failed to install Typora - continuing"
+  fi
 fi
 
-# Copy over Omarchy applications
+# Copy over Omadora applications
 source omarchy-refresh-applications || true

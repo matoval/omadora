@@ -1,17 +1,17 @@
 #!/bin/bash
 
 abort() {
-  echo -e "\e[31mOmarchy install requires: $1\e[0m"
+  echo -e "\e[31mOmadora install requires: $1\e[0m"
   echo
   gum confirm "Proceed anyway on your own accord and without assistance?" || exit 1
 }
 
-# Must be an Arch distro
-[[ -f /etc/arch-release ]] || abort "Vanilla Arch"
+# Must be a Fedora distro
+[[ -f /etc/fedora-release ]] || abort "Vanilla Fedora"
 
-# Must not be an Arch derivative distro
-for marker in /etc/cachyos-release /etc/eos-release /etc/garuda-release /etc/manjaro-release; do
-  [[ -f "$marker" ]] && abort "Vanilla Arch"
+# Must not be a Fedora derivative distro
+for marker in /etc/nobara-release /etc/ultramarine-release; do
+  [[ -f "$marker" ]] && abort "Vanilla Fedora"
 done
 
 # Must not be runnig as root
@@ -21,8 +21,8 @@ done
 [ "$(uname -m)" != "x86_64" ] && abort "x86_64 CPU"
 
 # Must not have Gnome or KDE already install
-pacman -Qe gnome-shell &>/dev/null && abort "Fresh + Vanilla Arch"
-pacman -Qe plasma-desktop &>/dev/null && abort "Fresh + Vanilla Arch"
+rpm -q gnome-shell &>/dev/null && abort "Fresh + Vanilla Fedora"
+rpm -q plasma-desktop &>/dev/null && abort "Fresh + Vanilla Fedora"
 
 # Cleared all guards
 echo "Guards: OK"

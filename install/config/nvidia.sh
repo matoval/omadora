@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # ==============================================================================
-# Hyprland NVIDIA Setup Script for Arch Linux
+# Hyprland NVIDIA Setup Script for Fedora Linux
 # ==============================================================================
 # This script automates the installation and configuration of NVIDIA drivers
-# for use with Hyprland on Arch Linux, following the official Hyprland wiki.
+# for use with Hyprland on Fedora Linux, following the official Hyprland wiki.
 #
 # Author: https://github.com/Kn0ax
 #
@@ -23,37 +23,29 @@ if [ -n "$(lspci | grep -i 'nvidia')" ]; then
     NVIDIA_DRIVER_PACKAGE="nvidia-dkms"
   fi
 
-  # Check which kernel is installed and set appropriate headers package
-  KERNEL_HEADERS="linux-headers" # Default
-  if pacman -Q linux-zen &>/dev/null; then
-    KERNEL_HEADERS="linux-zen-headers"
-  elif pacman -Q linux-lts &>/dev/null; then
-    KERNEL_HEADERS="linux-lts-headers"
-  elif pacman -Q linux-hardened &>/dev/null; then
-    KERNEL_HEADERS="linux-hardened-headers"
+  # Fedora automatically manages kernel headers via kernel-devel package
+  KERNEL_HEADERS="kernel-devel"
+
+  # Enable RPM Fusion for NVIDIA drivers (should already be enabled by fedora-repos.sh)
+  if ! rpm -q rpmfusion-nonfree-release &>/dev/null; then
+    sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
   fi
 
-  # Enable multilib repository for 32-bit libraries
-  if ! grep -q "^\[multilib\]" /etc/pacman.conf; then
-    sudo sed -i '/^#\[multilib\]/,/^#Include/ s/^#//' /etc/pacman.conf
+  # Install NVIDIA packages from RPM Fusion
+  if echo "$(lspci | grep -i 'nvidia')" | grep -q -E "RTX [2-9][0-9]|GTX 16"; then
+    NVIDIA_DRIVER_PACKAGE="akmod-nvidia-open"
+  else
+    NVIDIA_DRIVER_PACKAGE="akmod-nvidia"
   fi
-
-  # force package database refresh
-  sudo pacman -Syy
-
-  # Install packages
-  PACKAGES_TO_INSTALL=(
-    "${KERNEL_HEADERS}"
-    "${NVIDIA_DRIVER_PACKAGE}"
-    "nvidia-utils"
-    "lib32-nvidia-utils"
-    "egl-wayland"
-    "libva-nvidia-driver" # For VA-API hardware acceleration
-    "qt5-wayland"
-    "qt6-wayland"
-  )
-
-  yay -S --needed --noconfirm "${PACKAGES_TO_INSTALL[@]}"
+  
+  sudo dnf install -y \
+    ${KERNEL_HEADERS} \
+    ${NVIDIA_DRIVER_PACKAGE} \
+    xorg-x11-drv-nvidia-cuda \
+    nvidia-vaapi-driver \
+    egl-wayland \
+    qt5-qtwayland \
+    qt6-qtwayland
 
   # Configure modprobe for early KMS
   echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf >/dev/null

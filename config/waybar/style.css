@@ -1,4 +1,4 @@
-@import "../omarchy/current/theme/waybar.css";
+@import "../omadora/current/theme/waybar.css";
 
 * {
   background-color: @background;
@@ -37,7 +37,7 @@
 #bluetooth,
 #pulseaudio,
 #clock,
-#custom-omarchy {
+#custom-omadora {
   min-width: 12px;
   margin: 0 7.5px;
 }

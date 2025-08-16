@@ -1,6 +1,8 @@
 #!/bin/bash
 
-yay -S --noconfirm --needed docker docker-compose docker-buildx
+# Install Docker from Docker's official repository
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # Limit log size to avoid running out of disk
 sudo mkdir -p /etc/docker

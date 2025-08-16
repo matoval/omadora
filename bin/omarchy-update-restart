@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$(uname -r | sed 's/-arch/\.arch/')" != "$(pacman -Q linux | awk '{print $2}')" ]; then
+if [ "$(uname -r)" != "$(rpm -q kernel --qf '%{VERSION}-%{RELEASE}.%{ARCH}' | tail -1)" ]; then
   gum confirm "New Linux kernel requires reboot. Ready?" && omarchy-state clear re*-required && sudo reboot now
 elif [ -f "$HOME/.local/state/omarchy/reboot-required" ]; then
   gum confirm "Updates require reboot. Ready?" && omarchy-state clear re*-required && sudo reboot now

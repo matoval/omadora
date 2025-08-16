@@ -1,16 +1,47 @@
 #!/bin/bash
 
-yay -S --noconfirm --needed \
-  brightnessctl playerctl pamixer wiremix wireplumber \
-  fcitx5 fcitx5-gtk fcitx5-qt wl-clip-persist \
+# Install standard desktop packages from Fedora repos
+sudo dnf install -y \
+  brightnessctl playerctl pamixer wireplumber \
+  fcitx5 fcitx5-gtk fcitx5-qt \
   nautilus sushi ffmpegthumbnailer gvfs-mtp \
-  slurp satty \
+  slurp \
   mpv evince imv \
   chromium
 
+# Install from COPR repositories
+sudo dnf copr enable -y atim/satty
+sudo dnf install -y satty
+
 # Add screen recorder based on GPU
 if lspci | grep -qi 'nvidia'; then
-  yay -S --noconfirm --needed wf-recorder
+  sudo dnf install -y wf-recorder
 else
-  yay -S --noconfirm --needed wl-screenrec
+  # Build wl-screenrec from source automatically
+  if ! command -v wl-screenrec &>/dev/null; then
+    echo "Building wl-screenrec from source..."
+    # Ensure Rust and build dependencies are installed
+    if ! command -v cargo &>/dev/null; then
+      echo "Installing Rust and build dependencies..."
+      sudo dnf install -y cargo rust git gcc pkg-config wayland-devel wayland-protocols-devel
+    fi
+    
+    # Build wl-screenrec
+    echo "Cloning and building wl-screenrec..."
+    cd /tmp
+    rm -rf wl-screenrec 2>/dev/null
+    if git clone https://github.com/russelltg/wl-screenrec.git; then
+      cd wl-screenrec
+      if cargo build --release; then
+        sudo install -Dm755 target/release/wl-screenrec /usr/local/bin/wl-screenrec
+        echo "✅ wl-screenrec installed successfully"
+      else
+        echo "❌ Failed to build wl-screenrec"
+      fi
+      cd ~
+      rm -rf /tmp/wl-screenrec
+    else
+      echo "❌ Failed to clone wl-screenrec repository"
+    fi
+  fi
 fi
