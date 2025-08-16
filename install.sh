@@ -36,6 +36,9 @@ show_subtext() {
 }
 
 # Install prerequisites
+# Install gum first for interactive prompts
+sudo dnf install -y gum
+
 source $OMADORA_INSTALL/preflight/guard.sh
 source $OMADORA_INSTALL/preflight/fedora-repos.sh
 source $OMADORA_INSTALL/preflight/presentation.sh
