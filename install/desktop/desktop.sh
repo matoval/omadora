@@ -19,7 +19,7 @@ else
     sudo dnf install -y cargo rust
   fi
   # Install dependencies for satty
-  sudo dnf install -y gtk4-devel libadwaita-devel
+  sudo dnf install -y gtk4-devel libadwaita-devel libepoxy-devel pkg-config
   cd /tmp
   rm -rf satty 2>/dev/null
   if git clone https://github.com/gabm/Satty.git satty; then

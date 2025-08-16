@@ -19,7 +19,7 @@ if sudo dnf copr enable -y erikreider/SwayOSD 2>/dev/null && sudo dnf install -y
 else
   echo "Building SwayOSD from source..."
   # Install dependencies for SwayOSD
-  sudo dnf install -y gcc gcc-c++ meson ninja-build pkg-config gtk3-devel libpulse-devel
+  sudo dnf install -y gcc gcc-c++ meson ninja-build pkg-config gtk3-devel pulseaudio-libs-devel
   cd /tmp
   rm -rf SwayOSD 2>/dev/null
   if git clone https://github.com/ErikReider/SwayOSD.git; then
