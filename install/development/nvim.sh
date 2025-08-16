@@ -8,7 +8,12 @@ if ! command -v nvim &>/dev/null; then
   # Install LazyVim
   rm -rf ~/.config/nvim
   git clone https://github.com/LazyVim/starter ~/.config/nvim
-  cp -R ~/.local/share/omadora/config/nvim/* ~/.config/nvim/
+  # Determine source path
+  if [ -d "./config/nvim" ]; then
+    cp -R ./config/nvim/* ~/.config/nvim/
+  else
+    cp -R ~/.local/share/omadora/config/nvim/* ~/.config/nvim/
+  fi
   rm -rf ~/.config/nvim/.git
   echo "vim.opt.relativenumber = false" >>~/.config/nvim/lua/config/options.lua
 fi
