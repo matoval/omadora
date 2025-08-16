@@ -25,8 +25,17 @@ trap catch_errors ERR
 
 show_logo() {
   clear
-  # tte -i ~/.local/share/omadora/logo.txt --frame-rate ${2:-120} ${1:-expand}
-  cat <~/.local/share/omadora/logo.txt
+  # Determine logo path based on where we're running from
+  if [ -f "./logo.txt" ]; then
+    # Running from cloned repository
+    LOGO_PATH="./logo.txt"
+  else
+    # Running from installed location
+    LOGO_PATH="~/.local/share/omadora/logo.txt"
+  fi
+  
+  # tte -i $LOGO_PATH --frame-rate ${2:-120} ${1:-expand}
+  cat <"$LOGO_PATH" 2>/dev/null || echo "Omadora"
   echo
 }
 
