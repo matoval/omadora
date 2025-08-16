@@ -2,7 +2,7 @@
 
 # Install standard packages from Fedora repos
 sudo dnf install -y \
-  wget curl unzip inetutils \
+  wget curl unzip iputils hostname \
   fd-find fzf ripgrep bat jq xmlstarlet \
   wl-clipboard fastfetch btop \
   man-db tldr less whois plocate bash-completion \
