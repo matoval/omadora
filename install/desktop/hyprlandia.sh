@@ -13,9 +13,29 @@ sudo dnf install -y \
   hyprpolkitagent libqalculate waybar mako swaybg \
   xdg-desktop-portal-gtk
 
-# Enable SwayOSD COPR for audio/brightness OSD
-sudo dnf copr enable -y erikreider/SwayOSD
-sudo dnf install -y swayosd
+# Install SwayOSD with COPR fallback to source build
+if sudo dnf copr enable -y erikreider/SwayOSD 2>/dev/null && sudo dnf install -y swayosd 2>/dev/null; then
+  echo "✅ SwayOSD installed from COPR"
+else
+  echo "Building SwayOSD from source..."
+  # Install dependencies for SwayOSD
+  sudo dnf install -y gcc gcc-c++ meson ninja-build pkg-config gtk3-devel libpulse-devel
+  cd /tmp
+  rm -rf SwayOSD 2>/dev/null
+  if git clone https://github.com/ErikReider/SwayOSD.git; then
+    cd SwayOSD
+    if meson setup build && ninja -C build; then
+      sudo ninja -C build install
+      echo "✅ SwayOSD installed from source"
+    else
+      echo "❌ Failed to build SwayOSD from source"
+    fi
+    cd ~
+    rm -rf /tmp/SwayOSD
+  else
+    echo "❌ Failed to clone SwayOSD repository"
+  fi
+fi
 
 # Build walker from source automatically
 if ! command -v walker &>/dev/null; then
