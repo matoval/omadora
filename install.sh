@@ -3,8 +3,16 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-export PATH="$HOME/.local/share/omadora/bin:$PATH"
-OMADORA_INSTALL=~/.local/share/omadora/install
+# Determine if we're running from repo or installed location
+if [ -d "./install" ]; then
+  # Running from cloned repository
+  OMADORA_INSTALL="./install"
+  export PATH="./bin:$PATH"
+else
+  # Running from installed location
+  OMADORA_INSTALL=~/.local/share/omadora/install
+  export PATH="$HOME/.local/share/omadora/bin:$PATH"
+fi
 
 # Give people a chance to retry running the installation
 catch_errors() {
