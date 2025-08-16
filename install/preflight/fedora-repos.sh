@@ -48,10 +48,10 @@ if [[ "$(uname -m)" == "x86_64" ]]; then
   }
   
   # Enable COPR repositories with error handling
-  enable_copr "solopasha/hyprland" "Hyprland ecosystem"
-  enable_copr "atim/lazygit" "Lazygit"
-  enable_copr "atim/eza" "Eza (modern ls)"
-  enable_copr "wef/mise" "Mise runtime manager"
+  enable_copr "solopasha/hyprland" "Hyprland ecosystem" || true
+  enable_copr "atim/lazygit" "Lazygit" || true
+  enable_copr "alternateved/eza" "Eza (modern ls)" || true
+  enable_copr "wef/mise" "Mise runtime manager" || true
 
   # Refresh repository metadata after adding new repos
   sudo dnf makecache --refresh

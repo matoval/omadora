@@ -9,7 +9,7 @@ sudo dnf install -y \
   alacritty
 
 # Install from COPR repositories with fallback
-if sudo dnf copr enable -y atim/eza 2>/dev/null; then
+if sudo dnf copr enable -y alternateved/eza 2>/dev/null; then
   sudo dnf install -y eza || echo "⚠️ Failed to install eza from COPR"
 else
   echo "⚠️ Failed to enable eza COPR - using traditional ls"
