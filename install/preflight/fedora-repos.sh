@@ -61,8 +61,8 @@ fi
 
 # Install development tools (equivalent to Arch's base-devel group)
 echo "Installing development tools..."
-# Use dnf5 compatible @ syntax (works in both dnf4 and dnf5)
-sudo dnf install -y "@Development Tools" "@Development Libraries"
+# Use correct Fedora 42 group names
+sudo dnf install -y "@development-tools" "@c-development"
 
 # Install essential build dependencies not covered by groups
 echo "Installing additional build tools..."
