@@ -3,11 +3,14 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Determine if we're running from repo or installed location
-if [ -d "./install" ]; then
+if [ -d "$SCRIPT_DIR/install" ]; then
   # Running from cloned repository
-  OMADORA_INSTALL="./install"
-  export PATH="./bin:$PATH"
+  OMADORA_INSTALL="$SCRIPT_DIR/install"
+  export PATH="$SCRIPT_DIR/bin:$PATH"
 else
   # Running from installed location
   OMADORA_INSTALL=~/.local/share/omadora/install
