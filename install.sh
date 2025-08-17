@@ -115,4 +115,4 @@ sudo dnf upgrade -y --exclude=uwsm || echo "System upgrade encountered issues - 
 show_logo laseretch 920
 show_subtext "You're done! So we'll be rebooting now..."
 sleep 2
-reboot
+sudo reboot
