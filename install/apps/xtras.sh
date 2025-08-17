@@ -29,12 +29,20 @@ if [ -z "$OMADORA_BARE" ]; then
     sudo dnf install -y 1password 1password-cli || echo "Failed to install 1Password - continuing"
   fi
   
-  # Typora from official repository
+  # Typora from official repository (try both URLs)
   if ! rpm -q typora &>/dev/null; then
     echo "Installing Typora..."
-    sudo rpm --import https://typora.io/linux/public-key.asc
-    echo -e "[typora]\nname=typora\nbaseurl=https://typora.io/linux/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://typora.io/linux/public-key.asc" | sudo tee /etc/yum.repos.d/typora.repo
-    sudo dnf install -y typora || echo "Failed to install Typora - continuing"
+    # Try the alternative repository URL first
+    if sudo rpm --import https://typora.io/linux/public-key.asc 2>/dev/null; then
+      echo -e "[typora]\nname=typora\nbaseurl=https://download.typora.io/linux/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://typora.io/linux/public-key.asc" | sudo tee /etc/yum.repos.d/typora.repo
+      sudo dnf install -y typora 2>/dev/null || {
+        echo "Primary Typora repo failed, trying alternative..."
+        echo -e "[typora]\nname=typora\nbaseurl=https://typora.io/linux/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://typora.io/linux/public-key.asc" | sudo tee /etc/yum.repos.d/typora.repo
+        sudo dnf install -y typora 2>/dev/null || echo "Failed to install Typora - continuing"
+      }
+    else
+      echo "Failed to import Typora key - skipping Typora installation"
+    fi
   fi
 fi
 
