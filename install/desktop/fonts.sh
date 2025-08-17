@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo dnf install -y fontawesome-fonts cascadia-code-fonts google-noto-fonts google-noto-emoji-fonts
+sudo dnf install -y fontawesome-fonts cascadia-code-fonts google-noto-sans-fonts google-noto-emoji-fonts
 
 # Install iA Writer font from source
 if [ ! -f "/usr/local/share/fonts/iA Writer/iAWriterMonoS-Regular.ttf" ]; then

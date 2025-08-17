@@ -50,6 +50,10 @@ else
       sudo dnf install -y cargo rust git gcc pkg-config wayland-devel wayland-protocols-devel
     fi
     
+    # Install FFmpeg development libraries required for wl-screenrec
+    echo "Installing FFmpeg development libraries..."
+    sudo dnf install -y ffmpeg-devel ffmpeg-libs libavutil-devel libavcodec-devel libavformat-devel libavdevice-devel libavfilter-devel libswscale-devel libswresample-devel
+    
     # Build wl-screenrec
     echo "Cloning and building wl-screenrec..."
     cd /tmp

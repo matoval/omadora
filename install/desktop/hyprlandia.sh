@@ -19,7 +19,7 @@ if sudo dnf copr enable -y erikreider/SwayOSD 2>/dev/null && sudo dnf install -y
 else
   echo "Building SwayOSD from source..."
   # Install dependencies for SwayOSD
-  sudo dnf install -y gcc gcc-c++ meson ninja-build pkg-config gtk3-devel pulseaudio-libs-devel
+  sudo dnf install -y gcc gcc-c++ meson ninja-build pkg-config gtk3-devel pulseaudio-libs-devel sassc
   cd /tmp
   rm -rf SwayOSD 2>/dev/null
   if git clone https://github.com/ErikReider/SwayOSD.git; then
@@ -52,6 +52,11 @@ if ! command -v walker &>/dev/null; then
   rm -rf walker 2>/dev/null
   if git clone https://github.com/abenz1267/walker.git; then
     cd walker
+    # Initialize Go module if needed
+    if [ ! -f go.mod ]; then
+      go mod init walker
+      go mod tidy
+    fi
     if go build -o walker .; then
       sudo install -Dm755 walker /usr/local/bin/walker
       echo "✅ Walker installed successfully"
