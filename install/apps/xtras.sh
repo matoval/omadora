@@ -7,9 +7,12 @@ if [ -z "$OMADORA_BARE" ]; then
     libreoffice obs-studio kdenlive \
     xournalpp pinta
 
-  # Install GUI applications via Flatpak
+  # Install GUI applications via Flatpak (user-level)
   echo "Installing GUI applications via Flatpak..."
-  flatpak install -y flathub \
+  # Add flathub repository for user if not already added
+  flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  # Install applications for user only
+  flatpak install --user -y flathub \
     org.signal.Signal \
     md.obsidian.Obsidian \
     org.localsend.localsend_app \

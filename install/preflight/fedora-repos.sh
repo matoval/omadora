@@ -79,13 +79,17 @@ sudo dnf install -y --skip-broken \
 if ! command -v flatpak &>/dev/null; then
   echo "Installing Flatpak support..."
   sudo dnf install -y flatpak
-  
-  # Add Flathub repository for GUI applications
-  if ! flatpak remotes | grep -q flathub; then
-    sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  fi
 else
   echo "Flatpak already installed"
+fi
+
+# Set up user-level Flathub repository (avoids permission issues)
+echo "Setting up user-level Flathub repository..."
+if ! flatpak remotes --user | grep -q flathub; then
+  flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  echo "User-level Flathub repository added"
+else
+  echo "User-level Flathub repository already exists"
 fi
 
 # Configure DNF for better user experience (equivalent to pacman aesthetics)
