@@ -34,7 +34,7 @@ show_logo() {
     LOGO_PATH="./logo.txt"
   else
     # Running from installed location
-    LOGO_PATH="~/.local/share/omadora/logo.txt"
+    LOGO_PATH="$HOME/.local/share/omadora/logo.txt"
   fi
   
   # tte -i $LOGO_PATH --frame-rate ${2:-120} ${1:-expand}
