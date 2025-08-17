@@ -52,7 +52,8 @@ else
     
     # Install FFmpeg development libraries required for wl-screenrec
     echo "Installing FFmpeg development libraries..."
-    sudo dnf install -y ffmpeg-devel ffmpeg-libs libavutil-devel libavcodec-devel libavformat-devel libavdevice-devel libavfilter-devel libswscale-devel libswresample-devel
+    # Use --allowerasing to resolve conflicts with free FFmpeg libraries
+    sudo dnf install -y --allowerasing ffmpeg-devel ffmpeg-libs
     
     # Build wl-screenrec
     echo "Cloning and building wl-screenrec..."
