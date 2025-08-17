@@ -14,9 +14,9 @@ xdg-mime default imv.desktop image/tiff
 xdg-mime default org.gnome.Evince.desktop application/pdf
 
 # Use Chromium as the default browser
-xdg-settings set default-web-browser chromium.desktop
-xdg-mime default chromium.desktop x-scheme-handler/http
-xdg-mime default chromium.desktop x-scheme-handler/https
+xdg-settings set default-web-browser chromium.desktop 2>/dev/null || echo "Could not set default browser (normal in headless/VM environments)"
+xdg-mime default chromium.desktop x-scheme-handler/http 2>/dev/null || true
+xdg-mime default chromium.desktop x-scheme-handler/https 2>/dev/null || true
 
 # Open video files with mpv
 xdg-mime default mpv.desktop video/mp4
