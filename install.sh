@@ -100,9 +100,16 @@ source $OMADORA_INSTALL/apps/mimetypes.sh
 # Updates
 show_logo highlight
 show_subtext "Updating system packages [5/5]"
-sudo updatedb
+# Update locate database if available
+if command -v updatedb &>/dev/null; then
+  echo "Updating locate database..."
+  sudo updatedb || echo "Failed to update locate database - continuing"
+else
+  echo "updatedb not found - skipping locate database update"
+fi
 # Exclude uwsm from updates (equivalent to Arch's --ignore uwsm)
-sudo dnf upgrade -y --exclude=uwsm
+echo "Upgrading system packages..."
+sudo dnf upgrade -y --exclude=uwsm || echo "System upgrade encountered issues - continuing"
 
 # Reboot
 show_logo laseretch 920
