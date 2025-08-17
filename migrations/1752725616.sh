@@ -1,6 +1,7 @@
 echo "Make light themes possible"
-if [[ -f ~/.local/share/applications/blueberry.desktop ]]; then
+if [[ -f ~/.local/share/applications/blueberry.desktop ]] || [[ -f ~/.local/share/applications/blueman-manager.desktop ]]; then
   rm -f ~/.local/share/applications/blueberry.desktop
+  rm -f ~/.local/share/applications/blueman-manager.desktop
   rm -f ~/.local/share/applications/org.pulseaudio.pavucontrol.desktop
   update-desktop-database ~/.local/share/applications/
 
