@@ -4,7 +4,8 @@
 CONFIG_SOURCE=~/.local/share/omadora/config
 DEFAULT_SOURCE=~/.local/share/omadora/default
 
-# Copy over Omadora configs
+# Ensure .config directory exists and copy over Omadora configs
+mkdir -p ~/.config
 cp -R "$CONFIG_SOURCE"/* ~/.config/
 
 # Use default bashrc from Omadora
