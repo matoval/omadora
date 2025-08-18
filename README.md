@@ -7,7 +7,7 @@ Omadora is a Fedora adaptation of [Basecamp's Omarchy](https://github.com/baseca
 ## Installation
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/matoval/omadora/master/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/matoval/omadora/master/boot.sh | bash
 ```
 
 ## License

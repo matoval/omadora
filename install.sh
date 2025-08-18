@@ -3,16 +3,6 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Download and extract Omadora if not already present
-if [ ! -d ~/.local/share/omadora ]; then
-  echo "Downloading Omadora..."
-  mkdir -p ~/.local/share
-  cd ~/.local/share
-  curl -L https://github.com/matoval/omadora/archive/master.tar.gz | tar -xz
-  mv omadora-master omadora
-  echo "Omadora downloaded and extracted to ~/.local/share/omadora"
-fi
-
 OMADORA_INSTALL=~/.local/share/omadora/install
 export PATH="$HOME/.local/share/omadora/bin:$PATH"
 
