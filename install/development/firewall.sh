@@ -21,11 +21,13 @@ sudo firewall-cmd --permanent --add-service=ssh
 
 # Configure Docker integration if Docker is installed
 if command -v docker &>/dev/null; then
-  # Add docker0 interface to trusted zone for container networking
-  sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
+  # Ensure docker zone exists and add docker0 interface to it
+  sudo firewall-cmd --permanent --new-zone=docker 2>/dev/null || true
+  sudo firewall-cmd --permanent --zone=docker --add-interface=docker0
   
-  # Allow DNS for Docker containers
-  sudo firewall-cmd --permanent --zone=trusted --add-service=dns
+  # Allow necessary services for Docker containers
+  sudo firewall-cmd --permanent --zone=docker --add-service=dns
+  sudo firewall-cmd --permanent --zone=docker --add-masquerade
 fi
 
 # Reload firewall to apply all changes
