@@ -1,4 +1,4 @@
-@import "../omadora/current/theme/waybar.css";
+@import "~/.config/omadora/current/theme/waybar.css";
 
 * {
   background-color: @background;

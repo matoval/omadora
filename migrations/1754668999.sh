@@ -1,7 +1,7 @@
 echo "Set default DNS to Cloudflare (backup to Google) and tune MTU probing for more reliable SSH"
 
 # Set Cloudflare as primary DNS (with Google as backup)
-sudo cp ~/.local/share/omarchy/default/systemd/resolved.conf /etc/systemd/
+sudo cp ~/.local/share/omadora/default/systemd/resolved.conf /etc/systemd/
 sudo systemctl restart systemd-resolved
 
 # Solve common flakiness with SSH

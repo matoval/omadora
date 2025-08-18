@@ -1,4 +1,4 @@
-@import "../omadora/current/theme/swayosd.css";
+@import "~/.config/omadora/current/theme/swayosd.css";
 
 window {
   border-radius: 0;

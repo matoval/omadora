@@ -7,7 +7,7 @@ if ! command -v walker &>/dev/null; then
   rm -rf ~/.config/wofi
 
   mkdir -p ~/.config/walker
-  cp -r ~/.local/share/omarchy/config/walker/* ~/.config/walker/
+  cp -r ~/.local/share/omadora/config/walker/* ~/.config/walker/
 
   setsid uwsm app -- walker --gapplication-service &
 fi

@@ -1,6 +1,6 @@
 echo "Add UWSM env"
 
-export OMARCHY_PATH="$HOME/.local/share/omarchy"
+export OMARCHY_PATH="$HOME/.local/share/omadora"
 export PATH="$OMARCHY_PATH/bin:$PATH"
 
 mkdir -p "$HOME/.config/uwsm/"
