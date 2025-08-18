@@ -3,12 +3,18 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Download and extract Omadora if not already present
+if [ ! -d ~/.local/share/omadora ]; then
+  echo "Downloading Omadora..."
+  mkdir -p ~/.local/share
+  cd ~/.local/share
+  curl -L https://github.com/matoval/omadora/archive/master.tar.gz | tar -xz
+  mv omadora-master omadora
+  echo "Omadora downloaded and extracted to ~/.local/share/omadora"
+fi
 
-# Set up paths relative to script location
-OMADORA_INSTALL="$SCRIPT_DIR/install"
-export PATH="$SCRIPT_DIR/bin:$PATH"
+OMADORA_INSTALL=~/.local/share/omadora/install
+export PATH="$HOME/.local/share/omadora/bin:$PATH"
 
 # Give people a chance to retry running the installation
 catch_errors() {
