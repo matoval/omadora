@@ -29,6 +29,12 @@ if [ -z "$OMADORA_BARE" ]; then
     sudo dnf install -y 1password 1password-cli || echo "Failed to install 1Password - continuing"
   fi
   
+  # Remove old Typora repository if it exists (they moved their repo)
+  if [ -f /etc/yum.repos.d/typora.repo ]; then
+    sudo rm -f /etc/yum.repos.d/typora.repo
+    echo "Removed old Typora repository configuration"
+  fi
+  
   # Typora from binary tarball (official recommendation for non-Ubuntu distributions)
   if ! command -v typora &>/dev/null; then
     echo "Installing Typora..."
@@ -45,4 +51,4 @@ if [ -z "$OMADORA_BARE" ]; then
 fi
 
 # Copy over Omadora applications
-source omarchy-refresh-applications
+~/.local/share/omadora/bin/omarchy-refresh-applications

@@ -43,7 +43,7 @@ if ! command -v walker &>/dev/null; then
   # Ensure Go and build tools are installed
   if ! command -v go &>/dev/null; then
     echo "Installing Go and build dependencies..."
-    sudo dnf install -y golang git gtk4-devel gtk3-devel pkg-config
+    sudo dnf install -y golang git gtk4-devel gtk3-devel gtk4-layer-shell-devel pkg-config
   fi
   
   # Build walker
