@@ -29,12 +29,18 @@ if [ -z "$OMADORA_BARE" ]; then
     sudo dnf install -y 1password 1password-cli || echo "Failed to install 1Password - continuing"
   fi
   
-  # Typora from official repository
-  if ! rpm -q typora &>/dev/null; then
+  # Typora from binary tarball (official recommendation for non-Ubuntu distributions)
+  if ! command -v typora &>/dev/null; then
     echo "Installing Typora..."
-    sudo rpm --import https://typora.io/linux/public-key.asc
-    echo -e "[typora]\nname=typora\nbaseurl=https://typora.io/linux/rpm/\nenabled=1\ngpgcheck=1\ngpgkey=https://typora.io/linux/public-key.asc" | sudo tee /etc/yum.repos.d/typora.repo
-    sudo dnf install -y typora
+    cd /tmp
+    wget -q https://downloads.typora.io/linux/Typora-linux-x64.tar.gz || { echo "Failed to download Typora - skipping"; cd ~; }
+    if [ -f "Typora-linux-x64.tar.gz" ]; then
+      sudo tar -xzf Typora-linux-x64.tar.gz -C /opt/
+      sudo ln -sf /opt/bin/typora /usr/local/bin/typora
+      rm -f Typora-linux-x64.tar.gz
+      echo "✅ Typora installed from binary"
+    fi
+    cd ~
   fi
 fi
 
