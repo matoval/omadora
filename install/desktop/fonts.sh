@@ -8,8 +8,10 @@ if [ ! -f "/usr/local/share/fonts/iA Writer/iAWriterMonoS-Regular.ttf" ]; then
   # Ensure wget and unzip are available
   sudo dnf install -y wget unzip
   cd /tmp
+  # Clean up any existing files first
+  rm -rf iA-Fonts-master master.zip
   wget -q https://github.com/iaolo/iA-Fonts/archive/master.zip
-  unzip -q master.zip
+  unzip -q -o master.zip
   sudo mkdir -p "/usr/local/share/fonts/iA Writer"
   sudo cp "iA-Fonts-master/iA Writer/"* "/usr/local/share/fonts/iA Writer/"
   sudo fc-cache -f
