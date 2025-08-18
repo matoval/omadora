@@ -21,6 +21,10 @@ sudo firewall-cmd --permanent --add-service=ssh
 
 # Configure Docker integration if Docker is installed
 if command -v docker &>/dev/null; then
+  # Remove docker0 from any existing zones first
+  sudo firewall-cmd --permanent --zone=trusted --remove-interface=docker0 2>/dev/null || true
+  sudo firewall-cmd --permanent --zone=public --remove-interface=docker0 2>/dev/null || true
+  
   # Ensure docker zone exists and add docker0 interface to it
   sudo firewall-cmd --permanent --new-zone=docker 2>/dev/null || true
   sudo firewall-cmd --permanent --zone=docker --add-interface=docker0
