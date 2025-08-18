@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status  
+# Exit immediately if a command exits with a non-zero status
 set -e
 
-# This script should be run from the downloaded repository location
-# If running via wget, download and extract first, then run the actual installer
-if [ ! -f "$(dirname "$0")/install/preflight/guard.sh" ]; then
+# Check if we're running from a wget download (no supporting files)
+if [ ! -d "install" ]; then
   echo "Downloading Omadora..."
   mkdir -p ~/.local/share
   cd ~/.local/share
   
-  # Remove any existing incomplete installation
+  # Remove any existing installation
   rm -rf omadora
   
   # Download and extract
@@ -21,12 +20,13 @@ if [ ! -f "$(dirname "$0")/install/preflight/guard.sh" ]; then
   echo "Running installation..."
   
   # Execute the actual installer from the downloaded location
-  exec ~/.local/share/omadora/install.sh
+  cd ~/.local/share/omadora
+  exec ./install.sh
 fi
 
-# If we get here, we're running from the downloaded repository
-OMADORA_INSTALL="$(dirname "$0")/install"
-export PATH="$(dirname "$0")/bin:$PATH"
+# If we get here, we're running from the repository with all files present
+OMADORA_INSTALL="./install"
+export PATH="./bin:$PATH"
 
 # Give people a chance to retry running the installation
 catch_errors() {
@@ -39,8 +39,8 @@ trap catch_errors ERR
 
 show_logo() {
   clear
-  # Always use installed location
-  LOGO_PATH="$HOME/.local/share/omadora/logo.txt"
+  # Use logo from current directory
+  LOGO_PATH="./logo.txt"
   
   # tte -i $LOGO_PATH --frame-rate ${2:-120} ${1:-expand}
   cat <"$LOGO_PATH" 2>/dev/null || echo "Omadora"
