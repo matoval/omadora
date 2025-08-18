@@ -14,7 +14,15 @@ if [ ! -f "/usr/local/share/fonts/iA Writer/iAWriterMonoS-Regular.ttf" ]; then
   wget -q https://github.com/iaolo/iA-Fonts/archive/master.zip
   unzip -q -o master.zip
   sudo mkdir -p "/usr/local/share/fonts/iA Writer"
-  sudo cp "iA-Fonts-master/iA Writer/"* "/usr/local/share/fonts/iA Writer/"
+  # Copy fonts from all iA Writer font families
+  for font_family in "iA Writer Duo" "iA Writer Mono" "iA Writer Quattro"; do
+    if [ -d "iA-Fonts-master/$font_family/Static" ]; then
+      sudo cp "iA-Fonts-master/$font_family/Static"/*.ttf "/usr/local/share/fonts/iA Writer/" 2>/dev/null || true
+    fi
+    if [ -d "iA-Fonts-master/$font_family/Variable" ]; then
+      sudo cp "iA-Fonts-master/$font_family/Variable"/*.ttf "/usr/local/share/fonts/iA Writer/" 2>/dev/null || true
+    fi
+  done
   sudo fc-cache -f
   rm -rf iA-Fonts-master master.zip
   cd ~
