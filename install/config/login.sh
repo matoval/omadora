@@ -116,6 +116,12 @@ else
 fi
 
 if [ "$(plymouth-set-default-theme)" != "omadora" ]; then
+  # Ensure Plymouth script plugin is installed for script-based themes
+  if [ ! -f "/usr/lib64/plymouth/script.so" ]; then
+    echo "Installing Plymouth script plugin..."
+    sudo dnf install -y plymouth-plugin-script
+  fi
+  
   # Create plymouth theme directory
   sudo mkdir -p /usr/share/plymouth/themes/omadora/
   
