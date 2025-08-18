@@ -4,6 +4,6 @@ Description=Omadora splash screen.
 ModuleName=script
 
 [script]
-ImageDir=/usr/share/plymouth/themes/omarchy
-ScriptFile=/usr/share/plymouth/themes/omarchy/omarchy.script
+ImageDir=/usr/share/plymouth/themes/omadora
+ScriptFile=/usr/share/plymouth/themes/omadora/omadora.script
 ConsoleLogBackgroundColor=0x1a1b26
