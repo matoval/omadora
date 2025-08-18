@@ -7,6 +7,4 @@ if ! command -v iwctl &>/dev/null; then
   sudo systemctl enable --now iwd.service
 fi
 
-# Prevent systemd-networkd-wait-online timeout on boot
-sudo systemctl disable systemd-networkd-wait-online.service
-sudo systemctl mask systemd-networkd-wait-online.service
+# Skip network timeout handling for Fedora (uses NetworkManager by default)
