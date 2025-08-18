@@ -2,15 +2,23 @@
 
 # Setting the performance profile can make a big difference. By default, most systems seem to start in balanced mode,
 # even if they're not running off a battery. So let's make sure that's changed to performance.
-# Note: tuned-ppd (already installed on Fedora) provides powerprofilesctl functionality
+# Fedora 40+ uses tuned-ppd which provides powerprofilesctl functionality
 
-if ls /sys/class/power_supply/BAT* &>/dev/null; then
-  # This computer runs on a battery
-  powerprofilesctl set balanced || true
+# Install tuned-ppd if powerprofilesctl is not available
+if ! command -v powerprofilesctl &>/dev/null; then
+  sudo dnf install -y tuned-ppd
+  sudo systemctl enable --now tuned-ppd
+fi
 
-  # Enable battery monitoring timer for low battery notifications
-  systemctl --user enable --now omadora-battery-monitor.timer || true
-else
-  # This computer runs on power outlet
-  powerprofilesctl set performance || true
+if command -v powerprofilesctl &>/dev/null; then
+  if ls /sys/class/power_supply/BAT* &>/dev/null; then
+    # This computer runs on a battery
+    powerprofilesctl set balanced || true
+
+    # Enable battery monitoring timer for low battery notifications
+    systemctl --user enable --now omadora-battery-monitor.timer || true
+  else
+    # This computer runs on power outlet
+    powerprofilesctl set performance || true
+  fi
 fi

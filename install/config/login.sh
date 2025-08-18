@@ -4,7 +4,7 @@
 if ! command -v uwsm &>/dev/null || ! command -v plymouth &>/dev/null; then
   # Install UWSM from COPR and plymouth from Fedora repos
   sudo dnf copr enable -y solopasha/hyprland
-  sudo dnf install -y uwsm plymouth plymouth-system-theme
+  sudo dnf install -y uwsm plymouth plymouth-system-theme plymouth-plugin-script
 fi
 
 # ==============================================================================
