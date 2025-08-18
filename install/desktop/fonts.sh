@@ -11,10 +11,7 @@ if [ ! -f "/usr/local/share/fonts/iA Writer/iAWriterMonoS-Regular.ttf" ]; then
   wget -q https://github.com/iaolo/iA-Fonts/archive/master.zip
   unzip -q master.zip
   sudo mkdir -p "/usr/local/share/fonts/iA Writer"
-  # Use find to properly handle paths with spaces
-  find "iA-Fonts-master" -name "*.ttf" -o -name "*.otf" | while read -r font; do
-    sudo cp "$font" "/usr/local/share/fonts/iA Writer/"
-  done
+  sudo cp "iA-Fonts-master/iA Writer"/* "/usr/local/share/fonts/iA Writer/"
   sudo fc-cache -f
   rm -rf iA-Fonts-master master.zip
   cd ~

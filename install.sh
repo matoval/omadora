@@ -1,11 +1,32 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status
+# Exit immediately if a command exits with a non-zero status  
 set -e
 
-# Always use installed location (downloaded via wget)
-OMADORA_INSTALL=~/.local/share/omadora/install
-export PATH="$HOME/.local/share/omadora/bin:$PATH"
+# This script should be run from the downloaded repository location
+# If running via wget, download and extract first, then run the actual installer
+if [ ! -f "$(dirname "$0")/install/preflight/guard.sh" ]; then
+  echo "Downloading Omadora..."
+  mkdir -p ~/.local/share
+  cd ~/.local/share
+  
+  # Remove any existing incomplete installation
+  rm -rf omadora
+  
+  # Download and extract
+  curl -L https://github.com/matoval/omadora/archive/master.tar.gz | tar -xz
+  mv omadora-master omadora
+  
+  echo "Omadora downloaded and extracted to ~/.local/share/omadora"
+  echo "Running installation..."
+  
+  # Execute the actual installer from the downloaded location
+  exec ~/.local/share/omadora/install.sh
+fi
+
+# If we get here, we're running from the downloaded repository
+OMADORA_INSTALL="$(dirname "$0")/install"
+export PATH="$(dirname "$0")/bin:$PATH"
 
 # Give people a chance to retry running the installation
 catch_errors() {
@@ -84,16 +105,9 @@ source $OMADORA_INSTALL/apps/mimetypes.sh
 # Updates
 show_logo highlight
 show_subtext "Updating system packages [5/5]"
-# Update locate database if available
-if command -v updatedb &>/dev/null; then
-  echo "Updating locate database..."
-  sudo updatedb || echo "Failed to update locate database - continuing"
-else
-  echo "updatedb not found - skipping locate database update"
-fi
+sudo updatedb
 # Exclude uwsm from updates (equivalent to Arch's --ignore uwsm)
-echo "Upgrading system packages..."
-sudo dnf upgrade -y --exclude=uwsm || echo "System upgrade encountered issues - continuing"
+sudo dnf upgrade -y --exclude=uwsm
 
 # Reboot
 show_logo laseretch 920
