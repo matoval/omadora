@@ -3,19 +3,9 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Get the directory where this script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Determine if we're running from repo or installed location
-if [ -d "$SCRIPT_DIR/install" ]; then
-  # Running from cloned repository
-  OMADORA_INSTALL="$SCRIPT_DIR/install"
-  export PATH="$SCRIPT_DIR/bin:$PATH"
-else
-  # Running from installed location
-  OMADORA_INSTALL=~/.local/share/omadora/install
-  export PATH="$HOME/.local/share/omadora/bin:$PATH"
-fi
+# Always use installed location (downloaded via wget)
+OMADORA_INSTALL=~/.local/share/omadora/install
+export PATH="$HOME/.local/share/omadora/bin:$PATH"
 
 # Give people a chance to retry running the installation
 catch_errors() {
@@ -28,14 +18,8 @@ trap catch_errors ERR
 
 show_logo() {
   clear
-  # Determine logo path based on where we're running from
-  if [ -f "./logo.txt" ]; then
-    # Running from cloned repository
-    LOGO_PATH="./logo.txt"
-  else
-    # Running from installed location
-    LOGO_PATH="$HOME/.local/share/omadora/logo.txt"
-  fi
+  # Always use installed location
+  LOGO_PATH="$HOME/.local/share/omadora/logo.txt"
   
   # tte -i $LOGO_PATH --frame-rate ${2:-120} ${1:-expand}
   cat <"$LOGO_PATH" 2>/dev/null || echo "Omadora"

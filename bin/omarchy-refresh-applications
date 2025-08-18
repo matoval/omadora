@@ -1,41 +1,18 @@
 #!/bin/bash
 
-# Determine source directory based on context
-if [ -d "$HOME/.local/share/omadora/applications" ]; then
-  # Post-installation context
-  OMADORA_APPS_DIR="$HOME/.local/share/omadora/applications"
-elif [ -n "$SCRIPT_DIR" ] && [ -d "$SCRIPT_DIR/applications" ]; then
-  # Installation context with SCRIPT_DIR set
-  OMADORA_APPS_DIR="$SCRIPT_DIR/applications"
-elif [ -d "$(dirname "$(dirname "${BASH_SOURCE[0]}")")/applications" ]; then
-  # Installation context, derive from script location
-  OMADORA_APPS_DIR="$(dirname "$(dirname "${BASH_SOURCE[0]}")")/applications"
-else
-  echo "Warning: Could not find Omadora applications directory"
-  exit 1
-fi
-
 # Copy and sync icon files
 mkdir -p ~/.local/share/icons/hicolor/48x48/apps/
-if [ -d "$OMADORA_APPS_DIR/icons" ]; then
-  cp "$OMADORA_APPS_DIR"/icons/*.png ~/.local/share/icons/hicolor/48x48/apps/ 2>/dev/null || true
-fi
+cp ~/.local/share/omadora/applications/icons/*.png ~/.local/share/icons/hicolor/48x48/apps/
 gtk-update-icon-cache ~/.local/share/icons/hicolor &>/dev/null
 
 # Copy .desktop declarations
 mkdir -p ~/.local/share/applications
-if [ -d "$OMADORA_APPS_DIR" ]; then
-  cp "$OMADORA_APPS_DIR"/*.desktop ~/.local/share/applications/ 2>/dev/null || true
-fi
-if [ -d "$OMADORA_APPS_DIR/hidden" ]; then
-  cp "$OMADORA_APPS_DIR"/hidden/*.desktop ~/.local/share/applications/ 2>/dev/null || true
-fi
+cp ~/.local/share/omadora/applications/*.desktop ~/.local/share/applications/
+cp ~/.local/share/omadora/applications/hidden/*.desktop ~/.local/share/applications/
 
 # Only copy xtras if user is not in bare mode
 if [[ ! -f ~/.local/state/omadora/bare.mode ]] && [ -z "$OMADORA_BARE" ]; then
-  if [ -d "$OMADORA_APPS_DIR/xtras" ]; then
-    cp "$OMADORA_APPS_DIR"/xtras/*.desktop ~/.local/share/applications/ 2>/dev/null || true
-  fi
+  cp ~/.local/share/omadora/applications/xtras/*.desktop ~/.local/share/applications/
 fi
 
 update-desktop-database ~/.local/share/applications

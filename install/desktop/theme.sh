@@ -19,16 +19,10 @@ gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
 gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
 
-# Get the directory where the main script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-
 # Setup theme links
 mkdir -p ~/.config/omadora/themes
-if [ -d "$SCRIPT_DIR/themes" ]; then
-  for f in "$SCRIPT_DIR/themes"/*; do ln -nfs "$f" ~/.config/omadora/themes/; done
-else
-  for f in ~/.local/share/omadora/themes/*; do ln -nfs "$f" ~/.config/omadora/themes/; done
-fi
+# Always use installed location
+for f in ~/.local/share/omadora/themes/*; do ln -nfs "$f" ~/.config/omadora/themes/; done
 
 # Set initial theme
 mkdir -p ~/.config/omadora/current

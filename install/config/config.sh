@@ -1,18 +1,8 @@
 #!/bin/bash
 
-# Get the directory where the main script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-
-# Determine source path based on where we're running from
-if [ -d "$SCRIPT_DIR/config" ]; then
-  # Running from cloned repository
-  CONFIG_SOURCE="$SCRIPT_DIR/config"
-  DEFAULT_SOURCE="$SCRIPT_DIR/default"
-else
-  # Running from installed location
-  CONFIG_SOURCE="~/.local/share/omadora/config"
-  DEFAULT_SOURCE="~/.local/share/omadora/default"
-fi
+# Always use installed location
+CONFIG_SOURCE=~/.local/share/omadora/config
+DEFAULT_SOURCE=~/.local/share/omadora/default
 
 # Copy over Omadora configs
 cp -R "$CONFIG_SOURCE"/* ~/.config/
