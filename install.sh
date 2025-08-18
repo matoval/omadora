@@ -3,30 +3,12 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Check if we're running from a wget download (no supporting files)
-if [ ! -d "install" ]; then
-  echo "Downloading Omadora..."
-  mkdir -p ~/.local/share
-  cd ~/.local/share
-  
-  # Remove any existing installation
-  rm -rf omadora
-  
-  # Download and extract
-  curl -L https://github.com/matoval/omadora/archive/master.tar.gz | tar -xz
-  mv omadora-master omadora
-  
-  echo "Omadora downloaded and extracted to ~/.local/share/omadora"
-  echo "Running installation..."
-  
-  # Execute the actual installer from the downloaded location
-  cd ~/.local/share/omadora
-  exec ./install.sh
-fi
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# If we get here, we're running from the repository with all files present
-OMADORA_INSTALL="./install"
-export PATH="./bin:$PATH"
+# Set up paths relative to script location
+OMADORA_INSTALL="$SCRIPT_DIR/install"
+export PATH="$SCRIPT_DIR/bin:$PATH"
 
 # Give people a chance to retry running the installation
 catch_errors() {
