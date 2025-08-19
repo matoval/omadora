@@ -5,6 +5,7 @@ update-desktop-database ~/.local/share/applications
 echo "DEBUG: update-desktop-database completed"
 
 # Open all images with imv
+echo "DEBUG: Setting image mimetypes"
 xdg-mime default imv.desktop image/png
 xdg-mime default imv.desktop image/jpeg
 xdg-mime default imv.desktop image/gif
@@ -13,14 +14,17 @@ xdg-mime default imv.desktop image/bmp
 xdg-mime default imv.desktop image/tiff
 
 # Open PDFs with the Document Viewer
+echo "DEBUG: Setting PDF mimetypes"
 xdg-mime default org.gnome.Evince.desktop application/pdf
 
 # Use Chromium as the default browser
+echo "DEBUG: Setting browser defaults"
 xdg-settings set default-web-browser chromium.desktop
 xdg-mime default chromium.desktop x-scheme-handler/http
 xdg-mime default chromium.desktop x-scheme-handler/https
 
 # Open video files with mpv
+echo "DEBUG: Setting video mimetypes"
 xdg-mime default mpv.desktop video/mp4
 xdg-mime default mpv.desktop video/x-msvideo
 xdg-mime default mpv.desktop video/x-matroska
