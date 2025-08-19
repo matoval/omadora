@@ -51,4 +51,4 @@ if [ -z "$OMADORA_BARE" ]; then
 fi
 
 # Copy over Omadora applications
-~/.local/share/omadora/bin/omarchy-refresh-applications
+source ~/.local/share/omadora/bin/omarchy-refresh-applications || true
