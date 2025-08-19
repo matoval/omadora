@@ -49,12 +49,9 @@ if [ -z "$OMADORA_BARE" ]; then
       rm -f Typora-linux-x64.tar.gz
       echo "✅ Typora installed from binary"
     fi
-    echo "Test cd"
     cd ~
   fi
 fi
 
-echo "Test source"
 # Copy over Omadora applications
 source ~/.local/share/omadora/bin/omarchy-refresh-applications || true
-echo "Test end"
