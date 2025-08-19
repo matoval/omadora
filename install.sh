@@ -76,9 +76,12 @@ show_subtext "Installing default applications [4/5]"
 source $OMADORA_INSTALL/apps/webapps.sh
 source $OMADORA_INSTALL/apps/xtras.sh
 source $OMADORA_INSTALL/apps/mimetypes.sh
+echo "DEBUG: After mimetypes.sh source"
 
 # Updates
+echo "DEBUG: About to call show_logo highlight"
 show_logo highlight
+echo "DEBUG: After show_logo highlight"
 show_subtext "Updating system packages [5/5]"
 sudo updatedb
 # Exclude uwsm from updates (equivalent to Arch's --ignore uwsm)
