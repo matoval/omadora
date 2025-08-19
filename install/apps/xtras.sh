@@ -57,3 +57,4 @@ fi
 echo "Test source"
 # Copy over Omadora applications
 source ~/.local/share/omadora/bin/omarchy-refresh-applications || true
+echo "Test end"
