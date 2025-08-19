@@ -19,9 +19,13 @@ xdg-mime default org.gnome.Evince.desktop application/pdf
 
 # Use Chromium as the default browser
 echo "DEBUG: Setting browser defaults"
+echo "DEBUG: Setting default web browser"
 xdg-settings set default-web-browser chromium.desktop
+echo "DEBUG: Setting http handler"
 xdg-mime default chromium.desktop x-scheme-handler/http
+echo "DEBUG: Setting https handler"
 xdg-mime default chromium.desktop x-scheme-handler/https
+echo "DEBUG: Browser defaults completed"
 
 # Open video files with mpv
 echo "DEBUG: Setting video mimetypes"
