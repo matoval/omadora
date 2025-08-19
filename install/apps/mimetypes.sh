@@ -19,13 +19,29 @@ xdg-mime default org.gnome.Evince.desktop application/pdf
 
 # Use Chromium as the default browser
 echo "DEBUG: Setting browser defaults"
-echo "DEBUG: Setting default web browser"
-xdg-settings set default-web-browser chromium.desktop
-echo "DEBUG: Setting http handler"
-xdg-mime default chromium.desktop x-scheme-handler/http
-echo "DEBUG: Setting https handler"
-xdg-mime default chromium.desktop x-scheme-handler/https
-echo "DEBUG: Browser defaults completed"
+
+# Determine which chromium desktop file to use
+if [ -f ~/.local/share/applications/chromium.desktop ]; then
+  CHROMIUM_DESKTOP="chromium.desktop"
+elif [ -f /usr/share/applications/chromium.desktop ]; then
+  CHROMIUM_DESKTOP="chromium.desktop"
+elif [ -f /usr/share/applications/chromium-browser.desktop ]; then
+  CHROMIUM_DESKTOP="chromium-browser.desktop"
+else
+  echo "WARNING: No chromium desktop file found, skipping browser defaults"
+  CHROMIUM_DESKTOP=""
+fi
+
+if [ -n "$CHROMIUM_DESKTOP" ]; then
+  echo "DEBUG: Using $CHROMIUM_DESKTOP"
+  echo "DEBUG: Setting default web browser"
+  xdg-settings set default-web-browser "$CHROMIUM_DESKTOP"
+  echo "DEBUG: Setting http handler"
+  xdg-mime default "$CHROMIUM_DESKTOP" x-scheme-handler/http
+  echo "DEBUG: Setting https handler"
+  xdg-mime default "$CHROMIUM_DESKTOP" x-scheme-handler/https
+  echo "DEBUG: Browser defaults completed"
+fi
 
 # Open video files with mpv
 echo "DEBUG: Setting video mimetypes"
