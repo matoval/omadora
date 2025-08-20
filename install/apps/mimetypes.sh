@@ -35,7 +35,7 @@ fi
 if [ -n "$CHROMIUM_DESKTOP" ]; then
   echo "DEBUG: Using $CHROMIUM_DESKTOP"
   echo "DEBUG: Setting default web browser"
-  xdg-settings set default-web-browser "$CHROMIUM_DESKTOP"
+  xdg-settings set default-web-browser "$CHROMIUM_DESKTOP" || true
   echo "DEBUG: Setting http handler"
   xdg-mime default "$CHROMIUM_DESKTOP" x-scheme-handler/http
   echo "DEBUG: Setting https handler"
