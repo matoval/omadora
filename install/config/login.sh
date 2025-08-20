@@ -273,3 +273,9 @@ fi
 if ! systemctl is-enabled getty@tty1.service | grep -q disabled; then
   sudo systemctl disable getty@tty1.service
 fi
+
+# Set default target to graphical.target for auto-login to work
+if [ "$(systemctl get-default)" != "graphical.target" ]; then
+  sudo systemctl set-default graphical.target
+  echo "✅ Set default target to graphical.target"
+fi

@@ -8,6 +8,15 @@ DEFAULT_SOURCE=~/.local/share/omadora/default
 mkdir -p ~/.config
 cp -R "$CONFIG_SOURCE"/* ~/.config/
 
+# Copy default configs if they don't exist (like autostart with waybar)
+if [ -d "$DEFAULT_SOURCE" ]; then
+  # Copy default hypr configs that should not be overridden
+  if [ -f "$DEFAULT_SOURCE/hypr/autostart.conf" ] && [ ! -s ~/.config/hypr/autostart.conf ]; then
+    cp "$DEFAULT_SOURCE/hypr/autostart.conf" ~/.config/hypr/autostart.conf
+    echo "✅ Copied default autostart configuration with waybar"
+  fi
+fi
+
 # Use default bashrc from Omadora
 cp "$DEFAULT_SOURCE/bashrc" ~/.bashrc
 
